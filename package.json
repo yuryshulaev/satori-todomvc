@@ -1,7 +1,9 @@
 {
-  "private": true,
+  "name": "satori-todomvc",
+  "version": "0.1.0",
+  "description": "Satori TodoMVC application",
   "dependencies": {
-    "satorijs": "^0.1.1",
+    "satorijs": "^0.1.2",
     "director": "^1.2.8",
     "todomvc-app-css": "^2.0.0",
     "todomvc-common": "^1.0.0"
