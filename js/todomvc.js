@@ -53,7 +53,7 @@ let TodoComponent = (vm, view, todo) => {
 			view.label({on: {dblclick() {edit.value = todo.title; vm.startEdit(todo); view.focus(edit)}}}, () => todo.title),
 			view.button({class: 'destroy', on: {click() {vm.model.remove(todo)}}})]),
 		edit = view.input({class: 'edit', on: {blur() {vm.saveEdit(todo, this.value)}},
-			keydown: {[Key.ENTER]: el => {el.blur()}, [Key.ESCAPE]: () => {vm.cancelEdit(todo)}}})]);
+			keydown: {[view.Key.ENTER]: el => {el.blur()}, [view.Key.ESCAPE]: () => {vm.cancelEdit(todo)}}})]);
 };
 
 let TodoAppComponent = (vm, view) =>
