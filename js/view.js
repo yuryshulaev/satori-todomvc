@@ -53,8 +53,7 @@ let TodoComponent = (vm, view, todo) => {
 							}
 						}
 					},
-				},
-			})]});
+				}})]});
 };
 
 let TodoAppComponent = (vm, view) =>
@@ -65,12 +64,29 @@ let TodoAppComponent = (vm, view) =>
 				class: 'header',
 				content: [
 					view.h1({
-						content: 'todos',
-					}),
+						content: 'todos'}),
 					view.input({
 						class: 'new-todo',
 						attr: {placeholder: 'What needs to be done?', autofocus: ''},
-						keydown: view.inputKeyHandler(value => vm.model.add(value), {reset: true})})]}),
+						on: {
+							keydown(event) {
+								event.stopPropagation();
+
+								switch (event.keyCode) {
+									case view.Key.ENTER: {
+										let value = this.value.trim();
+
+										if (!value) {
+											return;
+										}
+
+										vm.model.add(value);
+										this.value = '';
+										break;
+									}
+								}
+							},
+						}})]}),
 			view.section({
 				class: 'main',
 				show: () => vm.model.todos.length,
@@ -81,8 +97,7 @@ let TodoAppComponent = (vm, view) =>
 						bind: {model: vm, key: 'allCompleted'}}),
 					view.label({
 						attr: {for: 'toggle-all'},
-						content: 'Mark all as complete',
-					}),
+						content: 'Mark all as complete'}),
 					view.ul({
 						class: 'todo-list',
 						list: {array: () => vm.items, item: todo =>
