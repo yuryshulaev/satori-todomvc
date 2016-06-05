@@ -14,23 +14,47 @@ let TodoComponent = (vm, view, todo) => {
 						attr: {type: 'checkbox'},
 						bind: {model: todo, key: 'completed'}}),
 					view.label({
-						on: {dblclick() {
-							edit.value = todo.title;
-							vm.startEdit(todo);
-							view.focus(edit);
-						}},
+						on: {
+							dblclick(event) {
+								event.stopPropagation();
+								edit.value = todo.title;
+								vm.startEdit(todo);
+								view.focus(edit);
+							},
+						},
 						content: () => todo.title}),
 					view.button({
 						class: 'destroy',
-						on: {click() {vm.model.remove(todo)}}})],
+						on: {
+							click(event) {
+								event.stopPropagation();
+								vm.model.remove(todo);
+							},
+						}})],
 			}),
 			edit = view.input({
 				class: 'edit',
-				on: {blur() {vm.saveEdit(todo, this.value)}},
-				keydown: {
-					[view.Key.ENTER]: el => {el.blur()},
-					[view.Key.ESCAPE]: () => {vm.cancelEdit(todo)},
-				}})]});
+				on: {
+					blur() {
+						vm.saveEdit(todo, this.value);
+					},
+
+					keydown(event) {
+						event.stopPropagation();
+
+						switch (event.keyCode) {
+							case view.Key.ENTER: {
+								this.blur();
+								break;
+							}
+							case view.Key.ESCAPE: {
+								vm.cancelEdit(todo);
+								break;
+							}
+						}
+					},
+				},
+			})]});
 };
 
 let TodoAppComponent = (vm, view) =>
@@ -84,7 +108,12 @@ let TodoAppComponent = (vm, view) =>
 					view.button({
 						class: 'clear-completed',
 						show: () => vm.completedCount,
-						on: {click() {vm.model.clearCompleted()}},
+						on: {
+							click(event) {
+								event.stopPropagation();
+								vm.model.clearCompleted();
+							},
+						},
 						content: 'Clear completed'})]})]});
 
 if (typeof module !== 'undefined') {
