@@ -109,7 +109,7 @@ let TodoAppComponent = (vm, view) =>
 					view.span({
 						class: 'todo-count',
 						content: () => [
-							view.strong(vm.remainingCount), ' ',
+							view.strong({content: vm.remainingCount}), ' ',
 							view.pluralize('item', vm.remainingCount), ' left',
 						]}),
 					view.ul({
