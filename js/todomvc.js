@@ -44,7 +44,7 @@ class ViewModel {
 	}
 }
 
-let TodoComponent = (vm, view, todo) => {
+let TodoView = (vm, view, todo) => {
 	let edit;
 
 	return view.li({class: {completed: () => todo.completed, editing: () => todo.editing}}, [
@@ -56,22 +56,22 @@ let TodoComponent = (vm, view, todo) => {
 			keydown: {[view.Key.ENTER]: el => {el.blur()}, [view.Key.ESCAPE]: () => {vm.cancelEdit(todo)}}})]);
 };
 
-let TodoAppComponent = (vm, view) =>
+let TodoAppView = (vm, view) =>
 	view.section({class: 'todoapp'}, [
 		view.header({class: 'header'}, [
-			view.h1('todos'),
+			view.h1({}, 'todos'),
 			view.input({class: 'new-todo', attr: {placeholder: 'What needs to be done?', autofocus: ''},
 				keydown: view.inputKeyHandler(value => vm.model.add(value), {reset: true})})]),
 		view.section({class: 'main', show: () => vm.model.todos.length}, [
 			view.input({class: 'toggle-all', attr: {id: 'toggle-all', type: 'checkbox'}, bind: {model: vm, key: 'allCompleted'}}),
 			view.label({attr: {for: 'toggle-all'}}, 'Mark all as complete'),
-			view.ul({class: 'todo-list', list: {array: () => vm.items, item: todo => TodoComponent(vm, view, todo)}})]),
+			view.ul({class: 'todo-list', list: {array: () => vm.items, item: todo => TodoView(vm, view, todo)}})]),
 		view.footer({class: 'footer', show: () => vm.model.todos.length}, [
-			view.span({class: 'todo-count'}, () => [view.strong(vm.remainingCount), ' ', view.pluralize('item', vm.remainingCount), ' ', 'left']),
+			view.span({class: 'todo-count'}, () => [view.strong({}, vm.remainingCount), ' ', view.pluralize('item', vm.remainingCount), ' ', 'left']),
 			view.ul({class: 'filters'}, () => Array.from(view.unproxy(vm.filters)).map(filter =>
-				view.li(view.a({class: {selected: () => filter[0] === vm.filter}, attr: {href: '#/' + filter[0]}}, filter[1].title)))),
+				view.li({}, view.a({class: {selected: () => filter[0] === vm.filter}, attr: {href: '#/' + filter[0]}}, filter[1].title)))),
 			view.button({class: 'clear-completed', show: () => vm.completedCount, on: {click() {vm.model.clearCompleted()}}}, 'Clear completed')])]);
 
 if (typeof module !== 'undefined') {
-	module.exports = {Todo, TodosModel, ViewModel, TodoComponent, TodoAppComponent};
+	module.exports = {Todo, TodosModel, ViewModel, TodoView, TodoAppView};
 }
