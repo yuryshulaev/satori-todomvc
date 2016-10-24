@@ -1,6 +1,6 @@
 {
   "name": "satori-todomvc",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Satori TodoMVC application",
   "dependencies": {
     "satorijs": "^0.3.0",
